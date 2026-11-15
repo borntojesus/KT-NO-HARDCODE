@@ -1,0 +1,6 @@
+.card {
+  color: #fff;
+  border: 1px solid red;
+  background: oklch(0.7 0.1 200);
+  font-family: "Inter", sans-serif;
+}

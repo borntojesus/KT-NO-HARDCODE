@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-brand: #0d8275;
+  --font-sans: "Inter", sans-serif;
+}

@@ -1,0 +1,8 @@
+{
+  "name": "fixture-good",
+  "private": true,
+  "noHardcode": {
+    "allow": ["src/app/globals.css"],
+    "ignore": ["src/generated/**"]
+  }
+}

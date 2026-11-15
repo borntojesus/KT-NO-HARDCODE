@@ -1,0 +1,7 @@
+.card {
+  color: var(--fg);
+  border: 1px solid var(--border);
+  background: transparent;
+  fill: currentColor;
+  font-family: var(--font-sans);
+}

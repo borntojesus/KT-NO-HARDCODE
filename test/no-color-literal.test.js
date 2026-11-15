@@ -1,0 +1,56 @@
+import rule from "../src/eslint/rules/no-color-literal.js";
+import { tsx, err, file } from "./setup.js";
+
+const v = (code) => ({ code, filename: file });
+const bad = (code, n = 1) => ({ code, filename: file, errors: err("color", n) });
+
+tsx.run("no-color-literal", rule, {
+  valid: [
+    v(`<a href="#about">x</a>`),
+    v(`<a href="#add">x</a>`),
+    v(`<div id="#bad" />`),
+    v(`<Link to="#cafe" />`),
+    v(`<label htmlFor="#bee" />`),
+    v(`<use xlinkHref="#abc" />`),
+    v(`<use xlink:href="#abc" />`),
+    v(`<a href={"#beef"} />`),
+    v(`<a href={\`#beef\`} />`),
+    v(`import x from "./#abc";`),
+    v(`export * from "./#abc";`),
+    v(`const m = await import("./#abc");`),
+    v(`const c = "currentColor transparent inherit none var(--fg)";`),
+    v(`const s = { color: "var(--fg)", fill: "currentColor", stroke: "none" };`),
+    v(`const url = "https://example.com/#abc";`),
+    v(`const html = "&#123; issue#123 a#fff";`),
+    v(`const id = "#section-1";`),
+    v(`const c = "background-color: var(--x)";`),
+    v(`const c = "recolor(x)";`),
+    v(`const label = "#1 best";`),
+  ],
+  invalid: [
+    bad(`const c = "#fff";`),
+    bad(`const c = "#0d8275";`),
+    bad(`const c = "#0d827580";`),
+    bad(`const c = "#ABCD";`),
+    bad(`const b = "1px solid #ccc";`),
+    bad(`const c = "rgb(0 0 0)";`),
+    bad(`const c = "rgba(0,0,0,.5)";`),
+    bad(`const c = "hsl(10 20% 30%)";`),
+    bad(`const c = "hsla(10, 20%, 30%, 1)";`),
+    bad(`const c = "oklch(0.7 0.1 200)";`),
+    bad(`const c = "oklab(0.7 0.1 0.1)";`),
+    bad(`const c = "lab(50% 40 59)";`),
+    bad(`const c = "lch(50% 40 59)";`),
+    bad(`const c = "hwb(12 50% 0%)";`),
+    bad(`const c = "color(display-p3 1 0 0)";`),
+    bad(`const t = \`border: 1px solid \${w} #ccc\`;`),
+    bad(`<div className="bg-[#123456]" />`),
+    bad(`<div style={{ color: "#fff", background: "rgb(1 2 3)" }} />`, 2),
+    bad(`<path fill="#000" stroke="#fff" />`, 2),
+    bad(`<Bar dataKey="v" fill="#8884d8" />`),
+    bad(`const styles = StyleSheet.create({ box: { backgroundColor: "#f00" } });`),
+    bad(`const v = cva("p-4", { variants: { tone: { red: "text-[#f00]" } } });`),
+    bad(`const k = clsx({ "bg-[#fff]": on });`),
+    bad(`<div title="#fff" />`),
+  ],
+});
